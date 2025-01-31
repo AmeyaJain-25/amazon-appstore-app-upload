@@ -1,0 +1,22 @@
+name: "Upload Android App Release to Amazon Appstore"
+description: "Github Action for uploading android (.apk) app to Amazon Appstore"
+author: "AmeyaJain-25"
+branding:
+  icon: "upload-cloud"
+  color: "blue"
+inputs:
+  client_id:
+    description: "Amazon AppStore Application Client ID"
+    required: true
+  client_secret:
+    description: "Amazon AppStore Application Client Secret"
+    required: true
+  app_id:
+    description: "Amazon AppStore Application ID"
+    required: true
+  android_apk_file:
+    description: "Path to the Android APK file to upload"
+    required: true
+runs:
+  using: "node20"
+  main: "build/index.js"
