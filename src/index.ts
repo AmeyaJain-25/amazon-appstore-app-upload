@@ -38,13 +38,13 @@ function getInputs() {
     );
     return null;
   }
-  // if (!fs.existsSync(androidApkReleaseFilePath)) {
-  //   logMessage(
-  //     LogLevel.FAILED,
-  //     `The APK file at path "${androidApkReleaseFilePath}" does not exist.`,
-  //   );
-  //   return null;
-  // }
+  if (!fs.existsSync(androidApkReleaseFilePath)) {
+    logMessage(
+      LogLevel.FAILED,
+      `The APK file at path "${androidApkReleaseFilePath}" does not exist.`,
+    );
+    return null;
+  }
 
   return {
     clientId,

@@ -2,11 +2,11 @@
   "name": "amazon-appstore-app-upload",
   "version": "1.0.0",
   "description": "Github Action for uploading android (.apk) app to Amazon Appstore",
-  "main": "build/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register --files --respawn --pretty ./src/index.ts",
-    "start": "node build/index.js",
-    "clean": "rimraf build/",
+    "start": "node dist/index.js",
+    "clean": "rimraf dist/",
     "build": "npm run clean && tsc && resolve-tspaths && npm ci --production"
   },
   "engines": {
@@ -25,7 +25,6 @@
   },
   "dependencies": {
     "@actions/core": "^1.10.1",
-    "@actions/github": "^6.0.0",
     "node-fetch": "^2.7.0"
   }
 }

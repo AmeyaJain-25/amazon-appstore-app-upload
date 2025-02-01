@@ -94,13 +94,10 @@ function getInputs() {
         (0, log_1.logMessage)(log_1.LogLevel.FAILED, "The file at path \"".concat(androidApkReleaseFilePath, "\" is not an APK file."));
         return null;
     }
-    // if (!fs.existsSync(androidApkReleaseFilePath)) {
-    //   logMessage(
-    //     LogLevel.FAILED,
-    //     `The APK file at path "${androidApkReleaseFilePath}" does not exist.`,
-    //   );
-    //   return null;
-    // }
+    if (!fs_1.default.existsSync(androidApkReleaseFilePath)) {
+        (0, log_1.logMessage)(log_1.LogLevel.FAILED, "The APK file at path \"".concat(androidApkReleaseFilePath, "\" does not exist."));
+        return null;
+    }
     return {
         clientId: clientId,
         clientSecret: clientSecret,

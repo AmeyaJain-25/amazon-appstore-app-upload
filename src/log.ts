@@ -17,27 +17,32 @@ export function logMessage(
 ) {
   switch (level) {
     case LogLevel.FAILED:
-      if (core.isDebug()) {
-        if (options.error instanceof Error || options.error !== undefined) {
-          core.error(options.error);
-        }
+      if (
+        core.isDebug() &&
+        (options.error instanceof Error || options.error !== undefined)
+      ) {
+        core.error(options.error);
       }
       core.setFailed(message);
       break;
     case LogLevel.INFO:
       core.info(message);
-      if (options.data !== undefined) {
+      if (core.isDebug() && options.data !== undefined) {
         core.info(JSON.stringify(options.data));
       }
       break;
     case LogLevel.WARNING:
       core.warning(message);
+      if (core.isDebug() && options.data !== undefined) {
+        core.warning(JSON.stringify(options.data));
+      }
       break;
     default:
-      if (core.isDebug()) {
-        if (options.error instanceof Error || options.error !== undefined) {
-          core.error(options.error);
-        }
+      if (
+        core.isDebug() &&
+        (options.error instanceof Error || options.error !== undefined)
+      ) {
+        core.error(options.error);
       }
       core.error(message);
       break;

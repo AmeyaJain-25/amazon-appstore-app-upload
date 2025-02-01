@@ -29,7 +29,7 @@ runs:
         echo "Installing dependencies..."
         npm install
         echo "Running action..."
-        node build/index.js
+        node dist/index.js
       shell: bash
       env:
         INPUT_CLIENT_ID: ${{ inputs.client_id }}
