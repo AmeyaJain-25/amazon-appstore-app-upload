@@ -9,6 +9,9 @@
     "clean": "rimraf build/",
     "build": "npm run clean && tsc && resolve-tspaths && npm ci --production"
   },
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "author": "Ameya Jain (AmeyaJain-25)",
   "license": "ISC",
   "devDependencies": {

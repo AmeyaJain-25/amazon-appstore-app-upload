@@ -18,5 +18,17 @@ inputs:
     description: "Path to the Android APK file to upload"
     required: true
 runs:
-  using: "node20"
-  main: "build/index.js"
+  using: "composite"
+  steps:
+    - run: |
+        cd $GITHUB_ACTION_PATH
+        echo "Installing dependencies..."
+        npm install
+        echo "Running action..."
+        node build/index.js
+      shell: bash
+      env:
+        INPUT_CLIENT_ID: ${{ inputs.client_id }}
+        INPUT_CLIENT_SECRET: ${{ inputs.client_secret }}
+        INPUT_APP_ID: ${{ inputs.app_id }}
+        INPUT_ANDROID_APK_FILE: ${{ inputs.android_apk_file }}
