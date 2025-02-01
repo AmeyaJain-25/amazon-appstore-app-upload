@@ -78,38 +78,35 @@ var fs_1 = __importDefault(require("fs"));
 var log_1 = require("./log");
 var constants_1 = require("./constants");
 function getInputs() {
-    var clientId = core.getInput("client_id");
-    var clientSecret = core.getInput("client_secret");
-    var appId = core.getInput("app_id");
-    var androidApkFilePath = core.getInput("android_apk_file");
-    if (!clientId) {
-        (0, log_1.logMessage)(log_1.LogLevel.FAILED, "Amazon Appstore Client ID is required");
+    var clientId = core.getInput("client_id", {
+        required: true,
+    });
+    var clientSecret = core.getInput("client_secret", {
+        required: true,
+    });
+    var appId = core.getInput("app_id", {
+        required: true,
+    });
+    var androidApkReleaseFilePath = core.getInput("android_apk_release_file", {
+        required: true,
+    });
+    if (!androidApkReleaseFilePath.endsWith(".apk")) {
+        (0, log_1.logMessage)(log_1.LogLevel.FAILED, "The file at path \"".concat(androidApkReleaseFilePath, "\" is not an APK file."));
         return null;
     }
-    else if (!clientSecret) {
-        (0, log_1.logMessage)(log_1.LogLevel.FAILED, "Amazon Appstore Client Secret is required");
-    }
-    else if (!appId) {
-        (0, log_1.logMessage)(log_1.LogLevel.FAILED, "Amazon Appstore App ID is required");
-    }
-    else if (!androidApkFilePath) {
-        (0, log_1.logMessage)(log_1.LogLevel.FAILED, "Android APK file path is required");
-    }
-    else if (!androidApkFilePath.endsWith(".apk")) {
-        (0, log_1.logMessage)(log_1.LogLevel.FAILED, "Invalid APK file");
-    }
-    else if (!fs_1.default.existsSync(androidApkFilePath)) {
-        (0, log_1.logMessage)(log_1.LogLevel.FAILED, "The APK file at path \"".concat(androidApkFilePath, "\" does not exist."));
-    }
-    else {
-        return {
-            clientId: clientId,
-            clientSecret: clientSecret,
-            appId: appId,
-            androidApkFilePath: androidApkFilePath,
-        };
-    }
-    return null;
+    // if (!fs.existsSync(androidApkReleaseFilePath)) {
+    //   logMessage(
+    //     LogLevel.FAILED,
+    //     `The APK file at path "${androidApkReleaseFilePath}" does not exist.`,
+    //   );
+    //   return null;
+    // }
+    return {
+        clientId: clientId,
+        clientSecret: clientSecret,
+        appId: appId,
+        androidApkReleaseFilePath: androidApkReleaseFilePath,
+    };
 }
 function authenticateWithAmazonAppstore(clientId, clientSecret) {
     return __awaiter(this, void 0, void 0, function () {
@@ -295,7 +292,7 @@ function getETagForApk(accessToken, appId, editId, apkId) {
         });
     });
 }
-function replaceApk(accessToken, appId, editId, apkId, eTag, androidApkFilePath) {
+function replaceApk(accessToken, appId, editId, apkId, eTag, androidApkReleaseFilePath) {
     return __awaiter(this, void 0, void 0, function () {
         var response, data, error_6;
         return __generator(this, function (_a) {
@@ -309,7 +306,7 @@ function replaceApk(accessToken, appId, editId, apkId, eTag, androidApkFilePath)
                                 "If-Match": eTag,
                                 "Content-Type": "application/octet-stream",
                             },
-                            body: fs_1.default.createReadStream(androidApkFilePath),
+                            body: fs_1.default.createReadStream(androidApkReleaseFilePath),
                         })];
                 case 1:
                     response = _a.sent();
@@ -336,7 +333,7 @@ function replaceApk(accessToken, appId, editId, apkId, eTag, androidApkFilePath)
 }
 function uploadAppToAmazonAppstore() {
     return __awaiter(this, void 0, void 0, function () {
-        var inputs, clientId, clientSecret, appId, androidApkFilePath, accessToken, activeEdit, editId, newEdit, latestApk, eTag, uploadedApk, error_7;
+        var inputs, clientId, clientSecret, appId, androidApkReleaseFilePath, accessToken, activeEdit, editId, newEdit, latestApk, eTag, uploadedApk, error_7;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -346,7 +343,7 @@ function uploadAppToAmazonAppstore() {
                     if (!inputs) {
                         return [2 /*return*/];
                     }
-                    clientId = inputs.clientId, clientSecret = inputs.clientSecret, appId = inputs.appId, androidApkFilePath = inputs.androidApkFilePath;
+                    clientId = inputs.clientId, clientSecret = inputs.clientSecret, appId = inputs.appId, androidApkReleaseFilePath = inputs.androidApkReleaseFilePath;
                     (0, log_1.logMessage)(log_1.LogLevel.INFO, "Authenticating with Amazon Appstore...");
                     return [4 /*yield*/, authenticateWithAmazonAppstore(clientId, clientSecret)];
                 case 1:
@@ -399,7 +396,7 @@ function uploadAppToAmazonAppstore() {
                         return [2 /*return*/];
                     }
                     (0, log_1.logMessage)(log_1.LogLevel.INFO, "Uploading new apk to Amazon Appstore...");
-                    return [4 /*yield*/, replaceApk(accessToken, appId, editId, latestApk.id, eTag, androidApkFilePath)];
+                    return [4 /*yield*/, replaceApk(accessToken, appId, editId, latestApk.id, eTag, androidApkReleaseFilePath)];
                 case 8:
                     uploadedApk = _a.sent();
                     if (!uploadedApk) {

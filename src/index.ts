@@ -18,37 +18,40 @@ import {
 } from "./index.type";
 
 function getInputs() {
-  const clientId = core.getInput("client_id");
-  const clientSecret = core.getInput("client_secret");
-  const appId = core.getInput("app_id");
-  const androidApkFilePath = core.getInput("android_apk_file");
+  const clientId = core.getInput("client_id", {
+    required: true,
+  });
+  const clientSecret = core.getInput("client_secret", {
+    required: true,
+  });
+  const appId = core.getInput("app_id", {
+    required: true,
+  });
+  const androidApkReleaseFilePath = core.getInput("android_apk_release_file", {
+    required: true,
+  });
 
-  if (!clientId) {
-    logMessage(LogLevel.FAILED, "Amazon Appstore Client ID is required");
-    return null;
-  } else if (!clientSecret) {
-    logMessage(LogLevel.FAILED, "Amazon Appstore Client Secret is required");
-  } else if (!appId) {
-    logMessage(LogLevel.FAILED, "Amazon Appstore App ID is required");
-  } else if (!androidApkFilePath) {
-    logMessage(LogLevel.FAILED, "Android APK file path is required");
-  } else if (!androidApkFilePath.endsWith(".apk")) {
-    logMessage(LogLevel.FAILED, "Invalid APK file");
-  } else if (!fs.existsSync(androidApkFilePath)) {
+  if (!androidApkReleaseFilePath.endsWith(".apk")) {
     logMessage(
       LogLevel.FAILED,
-      `The APK file at path "${androidApkFilePath}" does not exist.`,
+      `The file at path "${androidApkReleaseFilePath}" is not an APK file.`,
     );
-  } else {
-    return {
-      clientId,
-      clientSecret,
-      appId,
-      androidApkFilePath,
-    };
+    return null;
   }
+  // if (!fs.existsSync(androidApkReleaseFilePath)) {
+  //   logMessage(
+  //     LogLevel.FAILED,
+  //     `The APK file at path "${androidApkReleaseFilePath}" does not exist.`,
+  //   );
+  //   return null;
+  // }
 
-  return null;
+  return {
+    clientId,
+    clientSecret,
+    appId,
+    androidApkReleaseFilePath,
+  };
 }
 
 async function authenticateWithAmazonAppstore(
@@ -249,7 +252,7 @@ async function replaceApk(
   editId: string,
   apkId: string,
   eTag: string,
-  androidApkFilePath: string,
+  androidApkReleaseFilePath: string,
 ): Promise<UploadApkResponse | null> {
   try {
     const response = await fetch(
@@ -261,7 +264,7 @@ async function replaceApk(
           "If-Match": eTag,
           "Content-Type": "application/octet-stream",
         },
-        body: fs.createReadStream(androidApkFilePath),
+        body: fs.createReadStream(androidApkReleaseFilePath),
       },
     );
 
@@ -295,7 +298,7 @@ async function uploadAppToAmazonAppstore() {
       return;
     }
 
-    const { clientId, clientSecret, appId, androidApkFilePath } = inputs;
+    const { clientId, clientSecret, appId, androidApkReleaseFilePath } = inputs;
 
     logMessage(LogLevel.INFO, "Authenticating with Amazon Appstore...");
 
@@ -374,7 +377,7 @@ async function uploadAppToAmazonAppstore() {
       editId,
       latestApk.id,
       eTag,
-      androidApkFilePath,
+      androidApkReleaseFilePath,
     );
     if (!uploadedApk) {
       return;

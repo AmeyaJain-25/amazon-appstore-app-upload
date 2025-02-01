@@ -14,8 +14,8 @@ inputs:
   app_id:
     description: "Amazon AppStore Application ID"
     required: true
-  android_apk_file:
-    description: "Path to the Android APK file to upload"
+  android_apk_release_file:
+    description: "Path to the Android APK Release file to upload"
     required: true
 runs:
   using: "composite"
@@ -35,4 +35,4 @@ runs:
         INPUT_CLIENT_ID: ${{ inputs.client_id }}
         INPUT_CLIENT_SECRET: ${{ inputs.client_secret }}
         INPUT_APP_ID: ${{ inputs.app_id }}
-        INPUT_ANDROID_APK_FILE: ${{ inputs.android_apk_file }}
+        INPUT_ANDROID_APK_RELEASE_FILE: ${{ inputs.android_apk_release_file }}
