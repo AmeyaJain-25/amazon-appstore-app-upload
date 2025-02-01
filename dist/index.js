@@ -87,22 +87,22 @@ function getInputs() {
     var appId = core.getInput("app_id", {
         required: true,
     });
-    var androidApkReleaseFilePath = core.getInput("android_apk_release_file", {
+    var apkReleaseFilePath = core.getInput("apk_release_file", {
         required: true,
     });
-    if (!androidApkReleaseFilePath.endsWith(".apk")) {
-        (0, log_1.logMessage)(log_1.LogLevel.FAILED, "The file at path \"".concat(androidApkReleaseFilePath, "\" is not an APK file."));
+    if (!apkReleaseFilePath.endsWith(".apk")) {
+        (0, log_1.logMessage)(log_1.LogLevel.FAILED, "The file at path \"".concat(apkReleaseFilePath, "\" is not an APK file."));
         return null;
     }
-    if (!fs_1.default.existsSync(androidApkReleaseFilePath)) {
-        (0, log_1.logMessage)(log_1.LogLevel.FAILED, "The APK file at path \"".concat(androidApkReleaseFilePath, "\" does not exist."));
+    if (!fs_1.default.existsSync(apkReleaseFilePath)) {
+        (0, log_1.logMessage)(log_1.LogLevel.FAILED, "The APK file at path \"".concat(apkReleaseFilePath, "\" does not exist."));
         return null;
     }
     return {
         clientId: clientId,
         clientSecret: clientSecret,
         appId: appId,
-        androidApkReleaseFilePath: androidApkReleaseFilePath,
+        apkReleaseFilePath: apkReleaseFilePath,
     };
 }
 function authenticateWithAmazonAppstore(clientId, clientSecret) {
@@ -289,7 +289,7 @@ function getETagForApk(accessToken, appId, editId, apkId) {
         });
     });
 }
-function replaceApk(accessToken, appId, editId, apkId, eTag, androidApkReleaseFilePath) {
+function replaceApk(accessToken, appId, editId, apkId, eTag, apkReleaseFilePath) {
     return __awaiter(this, void 0, void 0, function () {
         var response, data, error_6;
         return __generator(this, function (_a) {
@@ -303,7 +303,7 @@ function replaceApk(accessToken, appId, editId, apkId, eTag, androidApkReleaseFi
                                 "If-Match": eTag,
                                 "Content-Type": "application/octet-stream",
                             },
-                            body: fs_1.default.createReadStream(androidApkReleaseFilePath),
+                            body: fs_1.default.createReadStream(apkReleaseFilePath),
                         })];
                 case 1:
                     response = _a.sent();
@@ -330,7 +330,7 @@ function replaceApk(accessToken, appId, editId, apkId, eTag, androidApkReleaseFi
 }
 function uploadAppToAmazonAppstore() {
     return __awaiter(this, void 0, void 0, function () {
-        var inputs, clientId, clientSecret, appId, androidApkReleaseFilePath, accessToken, activeEdit, editId, newEdit, latestApk, eTag, uploadedApk, error_7;
+        var inputs, clientId, clientSecret, appId, apkReleaseFilePath, accessToken, activeEdit, editId, newEdit, latestApk, eTag, uploadedApk, error_7;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -340,7 +340,7 @@ function uploadAppToAmazonAppstore() {
                     if (!inputs) {
                         return [2 /*return*/];
                     }
-                    clientId = inputs.clientId, clientSecret = inputs.clientSecret, appId = inputs.appId, androidApkReleaseFilePath = inputs.androidApkReleaseFilePath;
+                    clientId = inputs.clientId, clientSecret = inputs.clientSecret, appId = inputs.appId, apkReleaseFilePath = inputs.apkReleaseFilePath;
                     (0, log_1.logMessage)(log_1.LogLevel.INFO, "Authenticating with Amazon Appstore...");
                     return [4 /*yield*/, authenticateWithAmazonAppstore(clientId, clientSecret)];
                 case 1:
@@ -393,7 +393,7 @@ function uploadAppToAmazonAppstore() {
                         return [2 /*return*/];
                     }
                     (0, log_1.logMessage)(log_1.LogLevel.INFO, "Uploading new apk to Amazon Appstore...");
-                    return [4 /*yield*/, replaceApk(accessToken, appId, editId, latestApk.id, eTag, androidApkReleaseFilePath)];
+                    return [4 /*yield*/, replaceApk(accessToken, appId, editId, latestApk.id, eTag, apkReleaseFilePath)];
                 case 8:
                     uploadedApk = _a.sent();
                     if (!uploadedApk) {

@@ -35,4 +35,4 @@ runs:
         INPUT_CLIENT_ID: ${{ inputs.client_id }}
         INPUT_CLIENT_SECRET: ${{ inputs.client_secret }}
         INPUT_APP_ID: ${{ inputs.app_id }}
-        INPUT_ANDROID_APK_RELEASE_FILE: ${{ inputs.android_apk_release_file }}
+        INPUT_APK_RELEASE_FILE: ${{ inputs.apk_release_file }}

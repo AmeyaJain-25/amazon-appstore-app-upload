@@ -27,21 +27,21 @@ function getInputs() {
   const appId = core.getInput("app_id", {
     required: true,
   });
-  const androidApkReleaseFilePath = core.getInput("android_apk_release_file", {
+  const apkReleaseFilePath = core.getInput("apk_release_file", {
     required: true,
   });
 
-  if (!androidApkReleaseFilePath.endsWith(".apk")) {
+  if (!apkReleaseFilePath.endsWith(".apk")) {
     logMessage(
       LogLevel.FAILED,
-      `The file at path "${androidApkReleaseFilePath}" is not an APK file.`,
+      `The file at path "${apkReleaseFilePath}" is not an APK file.`,
     );
     return null;
   }
-  if (!fs.existsSync(androidApkReleaseFilePath)) {
+  if (!fs.existsSync(apkReleaseFilePath)) {
     logMessage(
       LogLevel.FAILED,
-      `The APK file at path "${androidApkReleaseFilePath}" does not exist.`,
+      `The APK file at path "${apkReleaseFilePath}" does not exist.`,
     );
     return null;
   }
@@ -50,7 +50,7 @@ function getInputs() {
     clientId,
     clientSecret,
     appId,
-    androidApkReleaseFilePath,
+    apkReleaseFilePath,
   };
 }
 
@@ -252,7 +252,7 @@ async function replaceApk(
   editId: string,
   apkId: string,
   eTag: string,
-  androidApkReleaseFilePath: string,
+  apkReleaseFilePath: string,
 ): Promise<UploadApkResponse | null> {
   try {
     const response = await fetch(
@@ -264,7 +264,7 @@ async function replaceApk(
           "If-Match": eTag,
           "Content-Type": "application/octet-stream",
         },
-        body: fs.createReadStream(androidApkReleaseFilePath),
+        body: fs.createReadStream(apkReleaseFilePath),
       },
     );
 
@@ -298,7 +298,7 @@ async function uploadAppToAmazonAppstore() {
       return;
     }
 
-    const { clientId, clientSecret, appId, androidApkReleaseFilePath } = inputs;
+    const { clientId, clientSecret, appId, apkReleaseFilePath } = inputs;
 
     logMessage(LogLevel.INFO, "Authenticating with Amazon Appstore...");
 
@@ -377,7 +377,7 @@ async function uploadAppToAmazonAppstore() {
       editId,
       latestApk.id,
       eTag,
-      androidApkReleaseFilePath,
+      apkReleaseFilePath,
     );
     if (!uploadedApk) {
       return;
