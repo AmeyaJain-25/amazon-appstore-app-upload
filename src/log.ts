@@ -1,4 +1,4 @@
-import core from "@actions/core";
+import * as core from "@actions/core";
 
 enum LogLevel {
   ERROR = "error", // Just log the message as an error and continue the execution
