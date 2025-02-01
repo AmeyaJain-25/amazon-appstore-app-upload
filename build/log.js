@@ -35,7 +35,7 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LogLevel = void 0;
 exports.logMessage = logMessage;
-var core = __importStar(require("@actions/core"));
+const core = __importStar(require("@actions/core"));
 var LogLevel;
 (function (LogLevel) {
     LogLevel["ERROR"] = "error";
@@ -43,11 +43,10 @@ var LogLevel;
     LogLevel["INFO"] = "info";
     LogLevel["WARNING"] = "warning";
 })(LogLevel || (exports.LogLevel = LogLevel = {}));
-function logMessage(level, message, options) {
-    if (options === void 0) { options = {
-        data: undefined,
-        error: undefined,
-    }; }
+function logMessage(level, message, options = {
+    data: undefined,
+    error: undefined,
+}) {
     switch (level) {
         case LogLevel.FAILED:
             if (core.isDebug()) {
@@ -76,4 +75,3 @@ function logMessage(level, message, options) {
             break;
     }
 }
-//# sourceMappingURL=log.js.map
