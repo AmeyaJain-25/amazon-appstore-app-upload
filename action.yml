@@ -1,5 +1,5 @@
 name: "Upload Android App(.apk) Release to Amazon Appstore"
-description: "GitHub Action for uploading Android APK release files to Amazon Appstore. Automatically handles authentication, edit creation, and APK replacement."
+description: "GitHub Action for uploading Android APK files to Amazon Appstore. Handles authentication, edit creation, and APK replacement."
 author: "AmeyaJain-25"
 branding:
   icon: "upload-cloud"
