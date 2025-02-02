@@ -1,6 +1,6 @@
 # Upload Android App(.apk) Release to Amazon Appstore
 
-A GitHub Action for uploading Android APK files to Amazon Appstore. It uses the Amazon Appstore Developer API to upload the APK file, handling the authentication, edit creation, and APK upload process.
+A GitHub Action for uploading Android APK release files to Amazon Appstore. It uses the Amazon Appstore Developer API to upload the APK file, handling the authentication, edit creation, and APK upload process.
 It follows the [Amazon Appstore Developer App Submission API](https://developer.amazon.com/docs/app-submission-api/overview.html) to upload the APK file.
 The steps to upload the APK file were taken from the [Amazon App Submission API Flows](https://developer.amazon.com/docs/app-submission-api/flows.html).
 

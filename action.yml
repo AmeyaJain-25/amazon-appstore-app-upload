@@ -1,5 +1,5 @@
 name: "Upload Android App(.apk) Release to Amazon Appstore"
-description: "GitHub Action for uploading Android APK files to Amazon Appstore. Automatically handles authentication, edit creation, and APK replacement."
+description: "GitHub Action for uploading Android APK release files to Amazon Appstore. Automatically handles authentication, edit creation, and APK replacement."
 author: "AmeyaJain-25"
 branding:
   icon: "upload-cloud"
@@ -20,23 +20,5 @@ inputs:
     required: true
 
 runs:
-  # using: "composite"
-  # steps:
-  #   - uses: actions/setup-node@v4
-  #     with:
-  #       node-version: "20"
-
-  #   - run: |
-  #       cd $GITHUB_ACTION_PATH
-  #       echo "Installing dependencies..."
-  #       npm ci
-  #       echo "Running action..."
-  #       node dist/index.js
-  #     shell: bash
-  #     env:
-  #       INPUT_CLIENT_ID: ${{ inputs.client_id }}
-  #       INPUT_CLIENT_SECRET: ${{ inputs.client_secret }}
-  #       INPUT_APP_ID: ${{ inputs.app_id }}
-  #       INPUT_APK_RELEASE_FILE: ${{ inputs.apk_release_file }}
   using: node20
   main: "dist/index.js"
