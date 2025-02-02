@@ -295,7 +295,18 @@ function replaceApk(accessToken, appId, editId, apkId, eTag, apkReleaseFilePath)
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 3, , 4]);
+                    (0, log_1.logMessage)(log_1.LogLevel.INFO, JSON.stringify({
+                        accessToken: accessToken,
+                        appId: appId,
+                        editId: editId,
+                        apkId: apkId,
+                        eTag: eTag,
+                        apkReleaseFilePath: apkReleaseFilePath,
+                        file: fs_1.default.createReadStream(apkReleaseFilePath),
+                    }));
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 4, , 5]);
                     return [4 /*yield*/, (0, node_fetch_1.default)("".concat(constants_1.AMAZON_APPSTORE_API_BASE_URL, "/").concat(constants_1.AMAZON_APPSTORE_API_VERSION, "/applications/").concat(appId, "/edits/").concat(editId, "/apks/").concat(apkId, "/replace"), {
                             method: "PUT",
                             headers: {
@@ -305,7 +316,7 @@ function replaceApk(accessToken, appId, editId, apkId, eTag, apkReleaseFilePath)
                             },
                             body: fs_1.default.createReadStream(apkReleaseFilePath),
                         })];
-                case 1:
+                case 2:
                     response = _a.sent();
                     if (!response.ok) {
                         (0, log_1.logMessage)(log_1.LogLevel.FAILED, "Failed to replace the APK: ".concat(response.statusText), {
@@ -314,16 +325,16 @@ function replaceApk(accessToken, appId, editId, apkId, eTag, apkReleaseFilePath)
                         return [2 /*return*/, null];
                     }
                     return [4 /*yield*/, response.json()];
-                case 2:
+                case 3:
                     data = (_a.sent());
                     return [2 /*return*/, data];
-                case 3:
+                case 4:
                     error_6 = _a.sent();
                     (0, log_1.logMessage)(log_1.LogLevel.FAILED, error_6.message, {
                         error: error_6,
                     });
                     return [2 /*return*/, null];
-                case 4: return [2 /*return*/];
+                case 5: return [2 /*return*/];
             }
         });
     });

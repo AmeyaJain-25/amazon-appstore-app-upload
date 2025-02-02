@@ -254,6 +254,18 @@ async function replaceApk(
   eTag: string,
   apkReleaseFilePath: string,
 ): Promise<UploadApkResponse | null> {
+  logMessage(
+    LogLevel.INFO,
+    JSON.stringify({
+      accessToken,
+      appId,
+      editId,
+      apkId,
+      eTag,
+      apkReleaseFilePath,
+      file: fs.createReadStream(apkReleaseFilePath),
+    }),
+  );
   try {
     const response = await fetch(
       `${AMAZON_APPSTORE_API_BASE_URL}/${AMAZON_APPSTORE_API_VERSION}/applications/${appId}/edits/${editId}/apks/${apkId}/replace`,

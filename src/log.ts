@@ -15,10 +15,11 @@ export function logMessage(
     error: undefined,
   },
 ) {
+  const isDebugMode = !core.isDebug();
   switch (level) {
     case LogLevel.FAILED:
       if (
-        core.isDebug() &&
+        isDebugMode &&
         (options.error instanceof Error || options.error !== undefined)
       ) {
         core.error(options.error);
@@ -27,19 +28,19 @@ export function logMessage(
       break;
     case LogLevel.INFO:
       core.info(message);
-      if (core.isDebug() && options.data !== undefined) {
+      if (isDebugMode && options.data !== undefined) {
         core.info(JSON.stringify(options.data));
       }
       break;
     case LogLevel.WARNING:
       core.warning(message);
-      if (core.isDebug() && options.data !== undefined) {
+      if (isDebugMode && options.data !== undefined) {
         core.warning(JSON.stringify(options.data));
       }
       break;
     default:
       if (
-        core.isDebug() &&
+        isDebugMode &&
         (options.error instanceof Error || options.error !== undefined)
       ) {
         core.error(options.error);

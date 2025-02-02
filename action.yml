@@ -14,7 +14,7 @@ inputs:
   app_id:
     description: "Amazon AppStore Application ID"
     required: true
-  android_apk_release_file:
+  apk_release_file:
     description: "Path to the Android APK Release file to upload"
     required: true
 runs:

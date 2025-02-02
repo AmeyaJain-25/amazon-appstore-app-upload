@@ -48,9 +48,10 @@ function logMessage(level, message, options) {
         data: undefined,
         error: undefined,
     }; }
+    var isDebugMode = !core.isDebug();
     switch (level) {
         case LogLevel.FAILED:
-            if (core.isDebug() &&
+            if (isDebugMode &&
                 (options.error instanceof Error || options.error !== undefined)) {
                 core.error(options.error);
             }
@@ -58,18 +59,18 @@ function logMessage(level, message, options) {
             break;
         case LogLevel.INFO:
             core.info(message);
-            if (core.isDebug() && options.data !== undefined) {
+            if (isDebugMode && options.data !== undefined) {
                 core.info(JSON.stringify(options.data));
             }
             break;
         case LogLevel.WARNING:
             core.warning(message);
-            if (core.isDebug() && options.data !== undefined) {
+            if (isDebugMode && options.data !== undefined) {
                 core.warning(JSON.stringify(options.data));
             }
             break;
         default:
-            if (core.isDebug() &&
+            if (isDebugMode &&
                 (options.error instanceof Error || options.error !== undefined)) {
                 core.error(options.error);
             }
