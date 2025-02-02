@@ -254,14 +254,11 @@ async function replaceApk(
   eTag: string,
   apkReleaseFilePath: string,
 ): Promise<UploadApkResponse | null> {
-  const fileBuffer = await fs.promises.readFile(apkReleaseFilePath);
-
-  logMessage(
-    LogLevel.INFO,
-    `File buffer: ${fileBuffer.length} bytes, ${fileBuffer.toString("utf8").substring(0, 100)} - ${JSON.stringify(fileBuffer)}`,
-  );
-
   try {
+    const fileBuffer = await fs.promises.readFile(apkReleaseFilePath);
+
+    logMessage(LogLevel.INFO, JSON.stringify(fileBuffer));
+
     const response = await fetch(
       `${AMAZON_APPSTORE_API_BASE_URL}/${AMAZON_APPSTORE_API_VERSION}/applications/${appId}/edits/${editId}/apks/${apkId}/replace`,
       {
@@ -270,6 +267,7 @@ async function replaceApk(
           Authorization: `Bearer ${accessToken}`,
           "If-Match": eTag,
           "Content-Type": "application/octet-stream",
+          "Content-Length": `${fileBuffer.length}`,
         },
         body: fileBuffer,
       },

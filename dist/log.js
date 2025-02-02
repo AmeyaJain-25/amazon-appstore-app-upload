@@ -48,7 +48,7 @@ function logMessage(level, message, options) {
         data: undefined,
         error: undefined,
     }; }
-    var isDebugMode = !core.isDebug();
+    var isDebugMode = core.isDebug();
     switch (level) {
         case LogLevel.FAILED:
             if (isDebugMode &&

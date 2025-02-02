@@ -1,22 +1,24 @@
 name: "Upload Android App Release to Amazon Appstore"
-description: "Github Action for uploading android (.apk) app to Amazon Appstore"
+description: "GitHub Action for uploading Android APK files to Amazon Appstore. Automatically handles authentication, edit creation, and APK replacement."
 author: "AmeyaJain-25"
 branding:
   icon: "upload-cloud"
   color: "blue"
+
 inputs:
   client_id:
-    description: "Amazon AppStore Application Client ID"
+    description: "Amazon AppStore Application Client ID obtained from the Amazon Developer Console"
     required: true
   client_secret:
-    description: "Amazon AppStore Application Client Secret"
+    description: "Amazon AppStore Application Client Secret obtained from the Amazon Developer Console"
     required: true
   app_id:
-    description: "Amazon AppStore Application ID"
+    description: "Amazon AppStore Application ID (the unique identifier for your app in the Amazon AppStore)"
     required: true
   apk_release_file:
-    description: "Path to the Android APK Release file to upload"
+    description: "Relative path to the Android APK release file (e.g., 'app/build/outputs/apk/release/app-release.apk')"
     required: true
+
 runs:
   using: "composite"
   steps:
@@ -27,12 +29,7 @@ runs:
     - run: |
         cd $GITHUB_ACTION_PATH
         echo "Installing dependencies..."
-        npm install
+        npm ci
         echo "Running action..."
         node dist/index.js
       shell: bash
-      env:
-        INPUT_CLIENT_ID: ${{ inputs.client_id }}
-        INPUT_CLIENT_SECRET: ${{ inputs.client_secret }}
-        INPUT_APP_ID: ${{ inputs.app_id }}
-        INPUT_APK_RELEASE_FILE: ${{ inputs.apk_release_file }}

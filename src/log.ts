@@ -15,7 +15,7 @@ export function logMessage(
     error: undefined,
   },
 ) {
-  const isDebugMode = !core.isDebug();
+  const isDebugMode = core.isDebug();
   switch (level) {
     case LogLevel.FAILED:
       if (
