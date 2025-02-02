@@ -33,3 +33,8 @@ runs:
         echo "Running action..."
         node dist/index.js
       shell: bash
+      env:
+        INPUT_CLIENT_ID: ${{ inputs.client_id }}
+        INPUT_CLIENT_SECRET: ${{ inputs.client_secret }}
+        INPUT_APP_ID: ${{ inputs.app_id }}
+        INPUT_APK_RELEASE_FILE: ${{ inputs.apk_release_file }}
