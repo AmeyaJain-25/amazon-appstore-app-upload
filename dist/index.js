@@ -297,7 +297,6 @@ function replaceApk(accessToken, appId, editId, apkId, eTag, apkReleaseFilePath)
                 case 0:
                     _a.trys.push([0, 3, , 4]);
                     fileBuffer = fs_1.default.readFileSync(apkReleaseFilePath);
-                    (0, log_1.logMessage)(log_1.LogLevel.INFO, "Uploading APK file: ".concat(apkReleaseFilePath, " with size: ").concat(fs_1.default.statSync(apkReleaseFilePath).size, " bytes"));
                     return [4 /*yield*/, (0, node_fetch_1.default)("".concat(constants_1.AMAZON_APPSTORE_API_BASE_URL, "/").concat(constants_1.AMAZON_APPSTORE_API_VERSION, "/applications/").concat(appId, "/edits/").concat(editId, "/apks/").concat(apkId, "/replace"), {
                             method: "PUT",
                             headers: {
