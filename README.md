@@ -13,6 +13,7 @@ The steps to upload the APK file were taken from the [Amazon App Submission API 
 - Collect the `App ID` from the Amazon Developer Console
 
 ## NOTE:
+
 - This action works for apps that are already created in the Amazon Appstore Developer Console. It does not create a new app.
 - This action only supports uploading APK files to Amazon Appstore. It does not support uploading AAB files.
 
@@ -35,3 +36,8 @@ The steps to upload the APK file were taken from the [Amazon App Submission API 
     app_id: ${{ secrets.AMAZON_APPSTORE_APP_ID }}
     apk_release_file: 'app/build/outputs/apk/release/app-release.apk'
 ```
+
+
+## Debugging
+
+To see the debug logs (e.g., the HTTP requests and responses made to the Amazon Appstore Developer API), set the secret `ACTIONS_RUNNER_DEBUG` to `true` in your repository secrets.
