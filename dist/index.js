@@ -291,10 +291,24 @@ function getETagForApk(accessToken, appId, editId, apkId) {
 }
 function replaceApk(accessToken, appId, editId, apkId, eTag, apkReleaseFilePath) {
     return __awaiter(this, void 0, void 0, function () {
-        var response, data, error_6;
+        var stream, stats, fileBuffer, response, data, error_6;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
+                    stream = fs_1.default.createReadStream(apkReleaseFilePath);
+                    stream.on("open", function () {
+                        (0, log_1.logMessage)(log_1.LogLevel.INFO, "File stream opened successfully.");
+                    });
+                    stream.on("error", function (err) {
+                        (0, log_1.logMessage)(log_1.LogLevel.FAILED, "Error with file stream: ".concat(JSON.stringify(err)));
+                    });
+                    stats = fs_1.default.statSync(apkReleaseFilePath);
+                    (0, log_1.logMessage)(log_1.LogLevel.INFO, "File size: ".concat(stats.size, " bytes - ").concat(JSON.stringify(stats)));
+                    (0, log_1.logMessage)(log_1.LogLevel.INFO, JSON.stringify({
+                        stream: stream,
+                    }));
+                    fileBuffer = fs_1.default.readFileSync(apkReleaseFilePath);
+                    (0, log_1.logMessage)(log_1.LogLevel.INFO, "File buffer: ".concat(fileBuffer.length, " bytes, ").concat(fileBuffer.toString("utf8").substring(0, 100), " - ").concat(JSON.stringify(fileBuffer)));
                     (0, log_1.logMessage)(log_1.LogLevel.INFO, JSON.stringify({
                         accessToken: accessToken,
                         appId: appId,

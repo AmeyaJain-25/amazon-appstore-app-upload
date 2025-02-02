@@ -254,6 +254,36 @@ async function replaceApk(
   eTag: string,
   apkReleaseFilePath: string,
 ): Promise<UploadApkResponse | null> {
+  const stream = fs.createReadStream(apkReleaseFilePath);
+  stream.on("open", () => {
+    logMessage(LogLevel.INFO, "File stream opened successfully.");
+  });
+  stream.on("error", (err: any) => {
+    logMessage(
+      LogLevel.FAILED,
+      `Error with file stream: ${JSON.stringify(err)}`,
+    );
+  });
+
+  const stats = fs.statSync(apkReleaseFilePath);
+  logMessage(
+    LogLevel.INFO,
+    `File size: ${stats.size} bytes - ${JSON.stringify(stats)}`,
+  );
+
+  logMessage(
+    LogLevel.INFO,
+    JSON.stringify({
+      stream,
+    }),
+  );
+
+  const fileBuffer = fs.readFileSync(apkReleaseFilePath);
+  logMessage(
+    LogLevel.INFO,
+    `File buffer: ${fileBuffer.length} bytes, ${fileBuffer.toString("utf8").substring(0, 100)} - ${JSON.stringify(fileBuffer)}`,
+  );
+
   logMessage(
     LogLevel.INFO,
     JSON.stringify({
