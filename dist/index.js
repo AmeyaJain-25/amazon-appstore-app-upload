@@ -302,8 +302,7 @@ function replaceApk(accessToken, appId, editId, apkId, eTag, apkReleaseFilePath)
                             headers: {
                                 Authorization: "Bearer ".concat(accessToken),
                                 "If-Match": eTag,
-                                "Content-Type": "application/octet-stream",
-                                "Content-Length": fileBuffer.length.toString(),
+                                "Content-Type": "application/vnd.android.package-archive",
                             },
                             body: fileBuffer,
                         })];

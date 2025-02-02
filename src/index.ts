@@ -264,8 +264,7 @@ async function replaceApk(
         headers: {
           Authorization: `Bearer ${accessToken}`,
           "If-Match": eTag,
-          "Content-Type": "application/octet-stream",
-          "Content-Length": fileBuffer.length.toString(),
+          "Content-Type": "application/vnd.android.package-archive",
         },
         body: fileBuffer,
       },
