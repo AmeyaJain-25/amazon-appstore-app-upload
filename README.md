@@ -28,10 +28,10 @@ The steps to upload the APK file were taken from the [Amazon App Submission API 
 
 ```yaml
 - name: Upload Android App to Amazon App Store
-        uses: AmeyaJain-25/amazon-appstore-app-upload@v1.0.0
-        with:
-          client_id: ${{secrets.AMAZON_APPSTORE_CLIENT_ID}}
-          client_secret: ${{secrets.AMAZON_APPSTORE_CLIENT_SECRET}}
-          app_id: ${{ secrets.AMAZON_APPSTORE_APP_ID }}
-          apk_release_file: 'app/build/outputs/apk/release/app-release.apk'
+  uses: AmeyaJain-25/amazon-appstore-app-upload@v1.0.0
+  with:
+    client_id: ${{secrets.AMAZON_APPSTORE_CLIENT_ID}}
+    client_secret: ${{secrets.AMAZON_APPSTORE_CLIENT_SECRET}}
+    app_id: ${{ secrets.AMAZON_APPSTORE_APP_ID }}
+    apk_release_file: 'app/build/outputs/apk/release/app-release.apk'
 ```
