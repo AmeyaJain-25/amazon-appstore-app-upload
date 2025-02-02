@@ -295,10 +295,8 @@ function replaceApk(accessToken, appId, editId, apkId, eTag, apkReleaseFilePath)
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 4, , 5]);
-                    return [4 /*yield*/, fs_1.default.promises.readFile(apkReleaseFilePath)];
-                case 1:
-                    fileBuffer = _a.sent();
+                    _a.trys.push([0, 3, , 4]);
+                    fileBuffer = fs_1.default.readFileSync(apkReleaseFilePath);
                     (0, log_1.logMessage)(log_1.LogLevel.INFO, JSON.stringify(fileBuffer));
                     return [4 /*yield*/, (0, node_fetch_1.default)("".concat(constants_1.AMAZON_APPSTORE_API_BASE_URL, "/").concat(constants_1.AMAZON_APPSTORE_API_VERSION, "/applications/").concat(appId, "/edits/").concat(editId, "/apks/").concat(apkId, "/replace"), {
                             method: "PUT",
@@ -306,11 +304,11 @@ function replaceApk(accessToken, appId, editId, apkId, eTag, apkReleaseFilePath)
                                 Authorization: "Bearer ".concat(accessToken),
                                 "If-Match": eTag,
                                 "Content-Type": "application/octet-stream",
-                                "Content-Length": "".concat(fileBuffer.length),
+                                "Content-Length": fileBuffer.length.toString(),
                             },
                             body: fileBuffer,
                         })];
-                case 2:
+                case 1:
                     response = _a.sent();
                     if (!response.ok) {
                         (0, log_1.logMessage)(log_1.LogLevel.FAILED, "Failed to replace the APK: ".concat(response.statusText), {
@@ -319,16 +317,16 @@ function replaceApk(accessToken, appId, editId, apkId, eTag, apkReleaseFilePath)
                         return [2 /*return*/, null];
                     }
                     return [4 /*yield*/, response.json()];
-                case 3:
+                case 2:
                     data = (_a.sent());
                     return [2 /*return*/, data];
-                case 4:
+                case 3:
                     error_6 = _a.sent();
                     (0, log_1.logMessage)(log_1.LogLevel.FAILED, error_6.message, {
                         error: error_6,
                     });
                     return [2 /*return*/, null];
-                case 5: return [2 /*return*/];
+                case 4: return [2 /*return*/];
             }
         });
     });

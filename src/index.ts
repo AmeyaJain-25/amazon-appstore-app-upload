@@ -255,7 +255,7 @@ async function replaceApk(
   apkReleaseFilePath: string,
 ): Promise<UploadApkResponse | null> {
   try {
-    const fileBuffer = await fs.promises.readFile(apkReleaseFilePath);
+    const fileBuffer = fs.readFileSync(apkReleaseFilePath);
 
     logMessage(LogLevel.INFO, JSON.stringify(fileBuffer));
 
@@ -267,7 +267,7 @@ async function replaceApk(
           Authorization: `Bearer ${accessToken}`,
           "If-Match": eTag,
           "Content-Type": "application/octet-stream",
-          "Content-Length": `${fileBuffer.length}`,
+          "Content-Length": fileBuffer.length.toString(),
         },
         body: fileBuffer,
       },
