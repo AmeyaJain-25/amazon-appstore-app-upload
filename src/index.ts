@@ -257,6 +257,13 @@ async function replaceApk(
   try {
     const fileBuffer = fs.readFileSync(apkReleaseFilePath);
 
+    logMessage(
+      LogLevel.INFO,
+      `Uploading APK file: ${apkReleaseFilePath} with size: ${
+        fs.statSync(apkReleaseFilePath).size
+      } bytes`,
+    );
+
     const response = await fetch(
       `${AMAZON_APPSTORE_API_BASE_URL}/${AMAZON_APPSTORE_API_VERSION}/applications/${appId}/edits/${editId}/apks/${apkId}/replace`,
       {
