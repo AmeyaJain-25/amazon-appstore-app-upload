@@ -254,48 +254,13 @@ async function replaceApk(
   eTag: string,
   apkReleaseFilePath: string,
 ): Promise<UploadApkResponse | null> {
-  const stream = fs.createReadStream(apkReleaseFilePath);
-  stream.on("open", () => {
-    logMessage(LogLevel.INFO, "File stream opened successfully.");
-  });
-  stream.on("error", (err: any) => {
-    logMessage(
-      LogLevel.FAILED,
-      `Error with file stream: ${JSON.stringify(err)}`,
-    );
-  });
+  const fileBuffer = await fs.promises.readFile(apkReleaseFilePath);
 
-  const stats = fs.statSync(apkReleaseFilePath);
-  logMessage(
-    LogLevel.INFO,
-    `File size: ${stats.size} bytes - ${JSON.stringify(stats)}`,
-  );
-
-  logMessage(
-    LogLevel.INFO,
-    JSON.stringify({
-      stream,
-    }),
-  );
-
-  const fileBuffer = fs.readFileSync(apkReleaseFilePath);
   logMessage(
     LogLevel.INFO,
     `File buffer: ${fileBuffer.length} bytes, ${fileBuffer.toString("utf8").substring(0, 100)} - ${JSON.stringify(fileBuffer)}`,
   );
 
-  logMessage(
-    LogLevel.INFO,
-    JSON.stringify({
-      accessToken,
-      appId,
-      editId,
-      apkId,
-      eTag,
-      apkReleaseFilePath,
-      file: fs.createReadStream(apkReleaseFilePath),
-    }),
-  );
   try {
     const response = await fetch(
       `${AMAZON_APPSTORE_API_BASE_URL}/${AMAZON_APPSTORE_API_VERSION}/applications/${appId}/edits/${editId}/apks/${apkId}/replace`,
@@ -306,7 +271,7 @@ async function replaceApk(
           "If-Match": eTag,
           "Content-Type": "application/octet-stream",
         },
-        body: fs.createReadStream(apkReleaseFilePath),
+        body: fileBuffer,
       },
     );
 

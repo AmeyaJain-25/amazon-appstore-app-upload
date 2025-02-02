@@ -291,36 +291,16 @@ function getETagForApk(accessToken, appId, editId, apkId) {
 }
 function replaceApk(accessToken, appId, editId, apkId, eTag, apkReleaseFilePath) {
     return __awaiter(this, void 0, void 0, function () {
-        var stream, stats, fileBuffer, response, data, error_6;
+        var fileBuffer, response, data, error_6;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    stream = fs_1.default.createReadStream(apkReleaseFilePath);
-                    stream.on("open", function () {
-                        (0, log_1.logMessage)(log_1.LogLevel.INFO, "File stream opened successfully.");
-                    });
-                    stream.on("error", function (err) {
-                        (0, log_1.logMessage)(log_1.LogLevel.FAILED, "Error with file stream: ".concat(JSON.stringify(err)));
-                    });
-                    stats = fs_1.default.statSync(apkReleaseFilePath);
-                    (0, log_1.logMessage)(log_1.LogLevel.INFO, "File size: ".concat(stats.size, " bytes - ").concat(JSON.stringify(stats)));
-                    (0, log_1.logMessage)(log_1.LogLevel.INFO, JSON.stringify({
-                        stream: stream,
-                    }));
-                    fileBuffer = fs_1.default.readFileSync(apkReleaseFilePath);
-                    (0, log_1.logMessage)(log_1.LogLevel.INFO, "File buffer: ".concat(fileBuffer.length, " bytes, ").concat(fileBuffer.toString("utf8").substring(0, 100), " - ").concat(JSON.stringify(fileBuffer)));
-                    (0, log_1.logMessage)(log_1.LogLevel.INFO, JSON.stringify({
-                        accessToken: accessToken,
-                        appId: appId,
-                        editId: editId,
-                        apkId: apkId,
-                        eTag: eTag,
-                        apkReleaseFilePath: apkReleaseFilePath,
-                        file: fs_1.default.createReadStream(apkReleaseFilePath),
-                    }));
-                    _a.label = 1;
+                case 0: return [4 /*yield*/, fs_1.default.promises.readFile(apkReleaseFilePath)];
                 case 1:
-                    _a.trys.push([1, 4, , 5]);
+                    fileBuffer = _a.sent();
+                    (0, log_1.logMessage)(log_1.LogLevel.INFO, "File buffer: ".concat(fileBuffer.length, " bytes, ").concat(fileBuffer.toString("utf8").substring(0, 100), " - ").concat(JSON.stringify(fileBuffer)));
+                    _a.label = 2;
+                case 2:
+                    _a.trys.push([2, 5, , 6]);
                     return [4 /*yield*/, (0, node_fetch_1.default)("".concat(constants_1.AMAZON_APPSTORE_API_BASE_URL, "/").concat(constants_1.AMAZON_APPSTORE_API_VERSION, "/applications/").concat(appId, "/edits/").concat(editId, "/apks/").concat(apkId, "/replace"), {
                             method: "PUT",
                             headers: {
@@ -328,9 +308,9 @@ function replaceApk(accessToken, appId, editId, apkId, eTag, apkReleaseFilePath)
                                 "If-Match": eTag,
                                 "Content-Type": "application/octet-stream",
                             },
-                            body: fs_1.default.createReadStream(apkReleaseFilePath),
+                            body: fileBuffer,
                         })];
-                case 2:
+                case 3:
                     response = _a.sent();
                     if (!response.ok) {
                         (0, log_1.logMessage)(log_1.LogLevel.FAILED, "Failed to replace the APK: ".concat(response.statusText), {
@@ -339,16 +319,16 @@ function replaceApk(accessToken, appId, editId, apkId, eTag, apkReleaseFilePath)
                         return [2 /*return*/, null];
                     }
                     return [4 /*yield*/, response.json()];
-                case 3:
+                case 4:
                     data = (_a.sent());
                     return [2 /*return*/, data];
-                case 4:
+                case 5:
                     error_6 = _a.sent();
                     (0, log_1.logMessage)(log_1.LogLevel.FAILED, error_6.message, {
                         error: error_6,
                     });
                     return [2 /*return*/, null];
-                case 5: return [2 /*return*/];
+                case 6: return [2 /*return*/];
             }
         });
     });
