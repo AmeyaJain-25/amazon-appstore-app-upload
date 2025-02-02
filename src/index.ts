@@ -255,8 +255,6 @@ async function replaceApk(
   apkReleaseFilePath: string,
 ): Promise<UploadApkResponse | null> {
   try {
-    const fileBuffer = fs.readFileSync(apkReleaseFilePath);
-
     const response = await fetch(
       `${AMAZON_APPSTORE_API_BASE_URL}/${AMAZON_APPSTORE_API_VERSION}/applications/${appId}/edits/${editId}/apks/${apkId}/replace`,
       {
@@ -265,8 +263,10 @@ async function replaceApk(
           Authorization: `Bearer ${accessToken}`,
           "If-Match": eTag,
           "Content-Type": "application/vnd.android.package-archive",
+          "Content-Length": fs.statSync(apkReleaseFilePath).size.toString(),
         },
-        body: fileBuffer,
+        body: fs.createReadStream(apkReleaseFilePath),
+        timeout: 60000,
       },
     );
 
