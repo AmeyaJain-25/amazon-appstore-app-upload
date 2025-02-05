@@ -29922,22 +29922,22 @@ function replaceApk(accessToken, appId, editId, apkId, eTag, apkReleaseFilePath)
                             headers: {
                                 Authorization: "Bearer ".concat(accessToken),
                                 "If-Match": eTag,
-                                "Content-Type": "application/octet-stream",
+                                "Content-Type": "application/vnd.android.package-archive",
                             },
                             body: fileBuffer,
                         })];
                 case 1:
                     response = _a.sent();
+                    return [4 /*yield*/, response.text()];
+                case 2:
+                    data = _a.sent();
                     if (!response.ok) {
                         (0, log_1.logMessage)(log_1.LogLevel.FAILED, "Failed to replace the APK: ".concat(response.statusText), {
-                            error: response,
+                            error: data,
                         });
                         return [2 /*return*/, null];
                     }
-                    return [4 /*yield*/, response.json()];
-                case 2:
-                    data = (_a.sent());
-                    return [2 /*return*/, data];
+                    return [2 /*return*/, JSON.parse(data)];
                 case 3:
                     error_6 = _a.sent();
                     (0, log_1.logMessage)(log_1.LogLevel.FAILED, error_6.message, {

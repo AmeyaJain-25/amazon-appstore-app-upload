@@ -264,25 +264,26 @@ async function replaceApk(
         headers: {
           Authorization: `Bearer ${accessToken}`,
           "If-Match": eTag,
-          "Content-Type": "application/octet-stream",
+          "Content-Type": "application/vnd.android.package-archive",
         },
         body: fileBuffer,
       },
     );
+
+    const data = await response.text();
 
     if (!response.ok) {
       logMessage(
         LogLevel.FAILED,
         `Failed to replace the APK: ${response.statusText}`,
         {
-          error: response,
+          error: data,
         },
       );
       return null;
     }
 
-    const data = (await response.json()) as UploadApkResponse;
-    return data;
+    return JSON.parse(data) as UploadApkResponse;
   } catch (error: any) {
     logMessage(LogLevel.FAILED, error.message, {
       error: error,
