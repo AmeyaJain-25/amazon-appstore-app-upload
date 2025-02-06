@@ -24,7 +24,6 @@ The steps to upload the APK file were taken from the [Amazon App Submission API 
 - `app_id` (required): Amazon AppStore Application ID (the unique identifier for your app in the Amazon AppStore)
 - `apk_release_file` (required): Relative path to the Android APK release file (e.g., 'app/build/outputs/apk/release/app-release.apk')
 
-
 ## Usage
 
 ```yaml
@@ -34,9 +33,8 @@ The steps to upload the APK file were taken from the [Amazon App Submission API 
     client_id: ${{secrets.AMAZON_APPSTORE_CLIENT_ID}}
     client_secret: ${{secrets.AMAZON_APPSTORE_CLIENT_SECRET}}
     app_id: ${{ secrets.AMAZON_APPSTORE_APP_ID }}
-    apk_release_file: 'app/build/outputs/apk/release/app-release.apk'
+    apk_release_file: ${{ github.workspace }}/app/build/outputs/apk/release/app-release.apk
 ```
-
 
 ## Debugging
 
