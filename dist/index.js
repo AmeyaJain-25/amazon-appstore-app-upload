@@ -29911,35 +29911,44 @@ function getETagForApk(accessToken, appId, editId, apkId) {
 }
 function replaceApk(accessToken, appId, editId, apkId, eTag, apkReleaseFilePath) {
     return __awaiter(this, void 0, void 0, function () {
-        var fileBuffer, response, data, error_6;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        var fileBuffer, response, data, errors, error_6;
+        var _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
-                    _a.trys.push([0, 3, , 4]);
+                    _b.trys.push([0, 3, , 4]);
                     fileBuffer = fs_1.default.readFileSync(apkReleaseFilePath);
                     return [4 /*yield*/, (0, node_fetch_1.default)("".concat(constants_1.AMAZON_APPSTORE_API_BASE_URL, "/").concat(constants_1.AMAZON_APPSTORE_API_VERSION, "/applications/").concat(appId, "/edits/").concat(editId, "/apks/").concat(apkId, "/replace"), {
                             method: "PUT",
                             headers: {
                                 Authorization: "Bearer ".concat(accessToken),
                                 "If-Match": eTag,
-                                "Content-Type": "application/vnd.android.package-archive",
+                                "Content-Type": "application/octet-stream",
                             },
                             body: fileBuffer,
                         })];
                 case 1:
-                    response = _a.sent();
+                    response = _b.sent();
                     return [4 /*yield*/, response.text()];
                 case 2:
-                    data = _a.sent();
+                    data = _b.sent();
                     if (!response.ok) {
-                        (0, log_1.logMessage)(log_1.LogLevel.FAILED, "Failed to replace the APK: ".concat(response.statusText), {
+                        errors = (_a = JSON.parse(data)) === null || _a === void 0 ? void 0 : _a.errors;
+                        (0, log_1.logMessage)(log_1.LogLevel.FAILED, "Failed to replace the APK: ".concat(response.statusText).concat((errors === null || errors === void 0 ? void 0 : errors.length)
+                            ? " - ".concat(errors
+                                .map(function (_a) {
+                                var errorMessage = _a.errorMessage;
+                                return errorMessage;
+                            })
+                                .join(", "))
+                            : ""), {
                             error: data,
                         });
                         return [2 /*return*/, null];
                     }
                     return [2 /*return*/, JSON.parse(data)];
                 case 3:
-                    error_6 = _a.sent();
+                    error_6 = _b.sent();
                     (0, log_1.logMessage)(log_1.LogLevel.FAILED, error_6.message, {
                         error: error_6,
                     });

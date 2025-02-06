@@ -264,7 +264,7 @@ async function replaceApk(
         headers: {
           Authorization: `Bearer ${accessToken}`,
           "If-Match": eTag,
-          "Content-Type": "application/vnd.android.package-archive",
+          "Content-Type": "application/octet-stream",
         },
         body: fileBuffer,
       },
@@ -273,9 +273,18 @@ async function replaceApk(
     const data = await response.text();
 
     if (!response.ok) {
+      const errors = JSON.parse(data)?.errors;
       logMessage(
         LogLevel.FAILED,
-        `Failed to replace the APK: ${response.statusText}`,
+        `Failed to replace the APK: ${response.statusText}${
+          errors?.length
+            ? ` - ${errors
+                .map(
+                  ({ errorMessage }: { errorMessage: string }) => errorMessage,
+                )
+                .join(", ")}`
+            : ""
+        }`,
         {
           error: data,
         },
